@@ -17,7 +17,7 @@ jobs:
         test: [9p, zfs-on-zerofs, nfs-kernel-compile]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install Rust with PGO support
         uses: dtolnay/rust-toolchain@stable
@@ -242,7 +242,7 @@ jobs:
           cp zerofs/Cargo.lock pgo-data/
 
       - name: Upload PGO profile data
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: pgo-profile-data-${{ matrix.test }}
           path: pgo-data/
@@ -253,7 +253,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install Rust with PGO support
         uses: dtolnay/rust-toolchain@stable
@@ -261,7 +261,7 @@ jobs:
           components: llvm-tools-preview
 
       - name: Download all PGO profile data
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           pattern: pgo-profile-data-*
           path: pgo-artifacts/
@@ -282,7 +282,7 @@ jobs:
           cp pgo-artifacts/pgo-profile-data-*/Cargo.lock pgo-data/ || true
 
       - name: Upload merged PGO profile data
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: pgo-profile-data-merged
           path: pgo-data/
@@ -352,10 +352,10 @@ jobs:
             use_cross: false
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Download PGO profile data
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: pgo-profile-data-merged
           path: pgo-data/
@@ -547,12 +547,12 @@ jobs:
           ls -lh artifacts/
 
       - name: Generate attestation for binary
-        uses: actions/attest-build-provenance@v1
+        uses: actions/attest-build-provenance@v3
         with:
           subject-path: artifacts/zerofs-${{ matrix.platform }}-${{ matrix.arch }}-pgo
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: zerofs-${{ matrix.platform }}-${{ matrix.arch }}-pgo
           path: artifacts/
@@ -569,7 +569,7 @@ jobs:
 
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: artifacts
 
@@ -587,7 +587,7 @@ jobs:
           sha256sum zerofs-pgo-multiplatform.tar.gz > zerofs-pgo-multiplatform.tar.gz.sha256
 
       - name: Upload combined release
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: zerofs-pgo-release
           path: |
@@ -596,7 +596,7 @@ jobs:
           retention-days: 90
 
       - name: Generate attestations
-        uses: actions/attest-build-provenance@v1
+        uses: actions/attest-build-provenance@v3
         with:
           subject-path: |
             zerofs-pgo-multiplatform.tar.gz
