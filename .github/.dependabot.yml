@@ -4,3 +4,15 @@ updates:
     directory: "/zerofs"
     schedule:
       interval: "weekly"
+    groups:
+      actions:
+        patterns:
+          - "*"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions:
+        patterns:
+          - "*"      
